@@ -1,0 +1,1 @@
+web: python baccarat_predictor.py
