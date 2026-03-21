@@ -1,12 +1,8 @@
-import { defineConfig } from 'vite'
+﻿import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: '../backend/static/dist',
-    emptyOutDir: true,
-  },
   server: {
     port: 3000,
     proxy: {
@@ -15,5 +11,8 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  build: {
+    outDir: './backend/staticdist'
   }
 })
