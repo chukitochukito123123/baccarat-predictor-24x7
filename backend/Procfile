@@ -1,0 +1,1 @@
+﻿web: gunicorn baccarat_predictor:app --bind 0.0.0.0:$PORT
