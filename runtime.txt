@@ -1,1 +1,1 @@
-echo "python-3.11.9" | Out-File runtime.txt -Encoding ascii
+echo "python-3.11.9" > runtime.txt
