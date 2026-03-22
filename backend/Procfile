@@ -1,1 +1,0 @@
-web: pip install --only-binary=all -r requirements.txt && gunicorn baccarat_predictor:app --bind=0.0.0.0:$PORT

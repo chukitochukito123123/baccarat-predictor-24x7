@@ -120,7 +120,7 @@ def stats():
 @app.route('/')
 @app.route('/<path:path>')
 def serve_react(path='index.html'):
-    return send_from_directory('../staticdist', 'index.html')
+    return send_from_directory('../staticdist', path)
 
 @app.route('/assets/<path:filename>')
 def serve_assets(filename):

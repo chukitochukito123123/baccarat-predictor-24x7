@@ -1,18 +1,16 @@
 ﻿import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/',
+  build: {
+    outDir: path.resolve(__dirname, 'backend/staticdist'),
+    emptyOutDir: true
+  },
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:10000',
-        changeOrigin: true
-      }
-    }
-  },
-  build: {
-    outDir: './backend/staticdist'
+    proxy: { '/api': 'http://localhost:10000' }
   }
 })
