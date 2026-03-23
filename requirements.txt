@@ -6,5 +6,3 @@ lxml==5.2.1
 requests==2.31.0
 scikit-learn==1.5.0
 numpy==1.26.4
-schedule==1.2.2
-python-dotenv==1.0.1

@@ -1,13 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baccarat 7 Pro - 95% Accuracy</title>
-  <script type="module" crossorigin src="/assets/index-aNLVjqVp.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DRMLAHoQ.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baccarat Predictor 95% ⚡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900">
-  <div id="root"></div>
+<body class="min-h-screen bg-gradient-to-br from-purple-600 via-blue-500 to-cyan-400 text-white overflow-x-hidden">
+    <!-- Header -->
+    <div class="text-center py-12">
+        <h1 class="text-5xl md:text-7xl font-black bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent mb-4 drop-shadow-2xl">
+            🎰 BACCARAT 7 PRO
+        </h1>
+        <div class="text-xl md:text-2xl bg-black/30 px-8 py-4 rounded-2xl backdrop-blur-sm">
+            95% ACCURACY • ML + BC.GAME LIVE
+        </div>
+    </div>
+
+    <!-- Prediction Card -->
+    <div id="prediction-card" class="max-w-4xl mx-auto p-8 bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl mb-12 border border-white/20">
+        <div class="text-center">
+            <div id="prediction" class="text-6xl md:text-8xl font-black mb-6 py-8 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl">CARGANDO...</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div id="confidence" class="text-4xl font-black text-yellow-400">--%</div>
+                    <div class="text-lg opacity-90">CONFIDENCE</div>
+                </div>
+                <div class="text-center">
+                    <div id="martingala" class="text-4xl font-black text-green-400">--</div>
+                    <div class="text-lg opacity-90">MARTINGALA</div>
+                </div>
+                <div class="text-center">
+                    <div id="streak" class="text-4xl font-black text-purple-400">--x</div>
+                    <div class="text-lg opacity-90">STREAK</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Circles -->
+    <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8 text-center">📊 HISTORIAL RECIENTE</h2>
+        <div id="history" class="flex flex-wrap justify-center gap-3 mb-12 pb-12"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+        <div class="bg-black/40 p-8 rounded-2xl text-center backdrop-blur-sm border border-white/20">
+            <div class="text-4xl font-black text-red-400" id="banker-count">0</div>
+            <div class="text-xl opacity-90">BANKER</div>
+            <div class="text-2xl font-bold text-yellow-400 mt-2" id="banker-pct">0%</div>
+        </div>
+        <div class="bg-black/40 p-8 rounded-2xl text-center backdrop-blur-sm border border-white/20">
+            <div class="text-4xl font-black text-blue-400" id="player-count">0</div>
+            <div class="text-xl opacity-90">PLAYER</div>
+            <div class="text-2xl font-bold text-yellow-400 mt-2" id="player-pct">0%</div>
+        </div>
+        <div class="bg-black/40 p-8 rounded-2xl text-center backdrop-blur-sm border border-white/20">
+            <div class="text-4xl font-black text-green-400" id="tie-count">0</div>
+            <div class="text-xl opacity-90">TIE</div>
+        </div>
+    </div>
+
+    <!-- Predict Button -->
+    <div class="text-center">
+        <button onclick="predictNow()" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 px-16 py-6 text-3xl font-black rounded-3xl shadow-2xl transition-all duration-300 transform hover:scale-105 mb-8">
+            🔮 PREDICT NOW
+        </button>
+        <div class="text-lg opacity-75">Actualiza cada 10s automáticamente</div>
+    </div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const [predRes, histRes, statsRes] = await Promise.all([
+                    fetch('/api/predict'),
+                    fetch('/api/history'),
+                    fetch('/api/stats')
+                ]);
+                const pred = await predRes.json();
+                const history = await histRes.json();
+                const stats = await statsRes.json();
+                
+                // Update prediction
+                document.getElementById('prediction').textContent = pred.prediction;
+                document.getElementById('confidence').textContent = (pred.confidence * 100).toFixed(0) + '%';
+                document.getElementById('martingala').textContent = pred.martingala;
+                document.getElementById('streak').textContent = pred.martingala + 'x';
+                
+                // Update history
+                document.getElementById('history').innerHTML = history.map(h => 
+                    `<div class="w-12 h-12 ${h.color} rounded-full shadow-lg flex items-center justify-center font-bold text-xs" title="${h.result}">${h.result[0]}</div>`
+                ).join('');
+                
+                // Update stats
+                document.getElementById('banker-count').textContent = stats.banker;
+                document.getElementById('player-count').textContent = stats.player;
+                document.getElementById('tie-count').textContent = stats.tie;
+                document.getElementById('banker-pct').textContent = stats.banker_pct + '%';
+                document.getElementById('player-pct').textContent = stats.player_pct + '%';
+                
+            } catch(e) {
+                console.error('Error:', e);
+            }
+        }
+        
+        function predictNow() {
+            document.getElementById('prediction-card').style.transform = 'scale(0.95)';
+            setTimeout(fetchData, 200);
+            setTimeout(() => document.getElementById('prediction-card').style.transform = '', 300);
+        }
+        
+        // Auto refresh
+        fetchData();
+        setInterval(fetchData, 10000);
+    </script>
 </body>
 </html>
