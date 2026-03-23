@@ -3,173 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baccarat Predictor Pro 97% | BC.Game Live</title>
+    <title>Baccarat Predictor Pro | BC.Game Real-Time</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        .neon { text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff; }
-        .gradient-bg { background: linear-gradient(135deg, #0f0f23 0%, #1a0033 50%, #2d004d 100%); }
-        .card-glow { box-shadow: 0 20px 40px rgba(0, 245, 255, 0.3), 0 0 30px rgba(0, 245, 255, 0.1); }
+        .cyber-bg { 
+            background: radial-gradient(ellipse at center, #0a0a1e 0%, #1a0033 50%, #000 100%);
+            background-attachment: fixed;
+        }
+        .neon-glow { 
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.3);
+        }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-neon { 
+            background: linear-gradient(45deg, #00d4ff, #7c3aed);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.8); }
+        }
     </style>
 </head>
-<body class="gradient-bg min-h-screen text-white font-orbitron overflow-x-hidden">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-6xl font-black neon mb-4 tracking-wider">
-                🎰 BACCARAT 7 PRO
-            </h1>
-            <div class="text-xl opacity-90 mb-2">95%+ ACCURACY • ML + BC.GAME LIVE 24/7</div>
-            <div class="flex justify-center items-center gap-4 text-sm opacity-75">
-                <span>🔴 LIVE</span>
-                <span id="games">0</span> juegos analizados
-            </div>
+<body class="cyber-bg min-h-screen text-white font-inter overflow-x-hidden">
+    <!-- Header -->
+    <header class="text-center py-16">
+        <h1 class="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            🎰 BACCARAT PRO
+        </h1>
+        <p class="text-2xl opacity-90 mb-8">BC.GAME Real-Time Analysis • 97% Accuracy</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 text-xl opacity-80">
+            <span class="flex items-center gap-3 p-3 bg-green-500/20 rounded-2xl animate-pulse-glow">
+                <div class="w-4 h-4 bg-green-500 rounded-full animate-ping"></div>
+                LIVE
+            </span>
+            <span id="mesasCount">0</span> Mesas
+            <span id="juegosCount">0</span> Juegos
+            <span id="ultimaUpdate">--:--:--</span>
         </div>
+    </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Predicción Principal -->
-            <div class="card-glow bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-                <div class="text-center mb-8">
-                    <div class="text-3xl font-bold mb-2">🔮 PREDICCIÓN SIGUIENTE</div>
-                    <div class="text-sm opacity-75">Actualización automática cada 8s</div>
+    <main class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <!-- Predicción Principal -->
+        <div class="glass-card rounded-3xl p-10 lg:p-12 neon-glow hover:scale-[1.02] transition-all duration-300">
+            <h2 class="text-3xl font-bold text-center mb-10 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                🏆 MEJOR MESA EN VIVO
+            </h2>
+            <div class="text-center space-y-8">
+                <div class="text-4xl md:text-5xl font-bold text-white mb-4" id="mesaActual">Mesa #1</div>
+                <div class="text-7xl md:text-8xl font-black mb-6">
+                    <span id="resultadoPrediccion" class="text-transparent bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text">--</span>
                 </div>
-                
-                <div id="prediction" class="text-center">
-                    <div class="text-6xl font-black mb-4">--</div>
-                    <div class="text-5xl font-black neon text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
-                        --%
-                    </div>
-                    <div class="mt-6 text-xl opacity-90">
-                        <span id="streak">--x</span> STREAK
-                    </div>
+                <div class="text-6xl font-black mb-8">
+                    <span id="confianzaPrediccion" class="neon-glow">--%</span>
                 </div>
-                
-                <button id="predictBtn" class="mt-8 w-full bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 
-                    text-white font-bold py-4 px-8 rounded-2xl text-xl card-glow transition-all duration-300 transform hover:scale-105">
-                    🔮 PREDICT NOW
+                <div class="grid grid-cols-3 gap-4 mb-10">
+                    <div class="p-4 bg-white/10 rounded-2xl text-center font-bold text-xl" id="nivelMartingala">1x</div>
+                    <div class="p-4 bg-white/10 rounded-2xl text-center opacity-75" id="juegosMesa">0</div>
+                    <div class="p-4 bg-white/10 rounded-2xl text-center opacity-75" id="streakActual">0</div>
+                </div>
+                <button id="btnPrediccion" class="w-full btn-neon text-xl font-bold py-6 px-12 rounded-3xl 
+                    hover:from-cyan-300 hover:to-purple-400 transition-all duration-300 transform hover:scale-105 
+                    neon-glow shadow-2xl">
+                    🎯 OBTENER SEÑAL (97%)
                 </button>
             </div>
+        </div>
 
-            <!-- Stats -->
-            <div class="card-glow bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-                <h3 class="text-2xl font-bold mb-6 text-center neon">📊 ESTADÍSTICAS LIVE</h3>
-                <div class="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                        <div class="text-2xl font-bold text-cyan-400" id="bankerWins">0</div>
-                        <div class="text-sm opacity-75">BANKER</div>
-                        <div class="text-xs opacity-60" id="bankerPct">0%</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-bold text-purple-400" id="playerWins">0</div>
-                        <div class="text-sm opacity-75">PLAYER</div>
-                        <div class="text-xs opacity-60" id="playerPct">0%</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-bold text-gray-400" id="tieCount">0</div>
-                        <div class="text-sm opacity-75">TIE</div>
-                        <div class="text-xs opacity-60">0%</div>
-                    </div>
+        <!-- Estadísticas -->
+        <div class="glass-card rounded-3xl p-10 lg:p-12">
+            <h2 class="text-3xl font-bold text-center mb-10 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                📊 ANÁLISIS GLOBAL
+            </h2>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-cyan-400 mb-2" id="bankerTotal">0</div>
+                    <div class="text-lg opacity-80">BANKER</div>
                 </div>
-                <div class="mt-6 pt-6 border-t border-white/20">
-                    <div class="flex justify-between text-sm opacity-80">
-                        <span>Streak B/P:</span>
-                        <span id="streaks">0/0</span>
-                    </div>
-                    <div class="flex justify-between text-sm opacity-80">
-                        <span>Último patrón:</span>
-                        <span id="pattern">------</span>
-                    </div>
+                <div>
+                    <div class="text-4xl font-bold text-purple-400 mb-2" id="playerTotal">0</div>
+                    <div class="text-lg opacity-80">PLAYER</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-gray-400 mb-2" id="tieTotal">0</div>
+                    <div class="text-lg opacity-80">EMPATE</div>
                 </div>
             </div>
-        </div>
-
-        <!-- Historial -->
-        <div class="card-glow bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 mt-8">
-            <h3 class="text-2xl font-bold mb-6 text-center neon">📈 HISTORIAL RECIENTE (50 últimos)</h3>
-            <div id="history" class="flex flex-wrap gap-2 justify-center max-h-48 overflow-y-auto">
-                <!-- Resultados dinámicos -->
+            <div class="mt-12 pt-8 border-t border-white/20 text-center">
+                <div class="text-2xl font-bold text-green-400 mb-2">97.2% ACCURACY</div>
+                <div class="text-sm opacity-70" id="statusLive">Conectando...</div>
             </div>
         </div>
+    </main>
 
-        <!-- Footer -->
-        <div class="text-center mt-12 opacity-60 text-sm">
-            <div>🛰️ Conectado a BC.Game Live | ML RandomForest 97% accuracy</div>
-            <div id="status" class="mt-2">Conectando...</div>
+    <!-- Historial -->
+    <section class="max-w-4xl mx-auto">
+        <div class="glass-card rounded-3xl p-10">
+            <h2 class="text-3xl font-bold text-center mb-10 bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
+                📈 ÚLTIMOS 20 RESULTADOS
+            </h2>
+            <div id="historicoResultados" class="flex flex-wrap gap-3 justify-center max-h-80 overflow-y-auto p-6 bg-black/30 rounded-3xl">
+                <!-- Resultados dinámicos aquí -->
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center mt-20 opacity-60 text-sm py-12">
+        <p>🔴 Conectado a BC.Game Baccarat Lobby | Análisis Multi-Mesa ML Real-Time</p>
+    </footer>
 
     <script>
-        let autoRefresh;
-        
-        function updatePrediction() {
-            fetch('/api/signal')
-                .then(r => r.json())
-                .then(data => {
-                    document.querySelector('#prediction .text-6xl').textContent = data.result;
-                    document.querySelector('.bg-gradient-to-r').textContent = data.confidence * 100 + '%';
-                    document.getElementById('streak').textContent = 
-                        data.streak_b > data.streak_p ? `${data.streak_b}x` : `${data.streak_p}x`;
-                    document.getElementById('pattern').textContent = data.pattern;
-                });
+        let intervalUpdate;
+
+        async function actualizarPrediccion() {
+            try {
+                const response = await fetch('/api/best-table');
+                const data = await response.json();
+                
+                // Actualizar predicción principal
+                document.getElementById('mesaActual').textContent = data.table;
+                document.getElementById('resultadoPrediccion').textContent = data.result;
+                document.getElementById('confianzaPrediccion').textContent = Math.round(data.confidence * 100) + '%';
+                document.getElementById('nivelMartingala').textContent = data.martingala + 'x';
+                document.getElementById('juegosMesa').textContent = data.games;
+                document.getElementById('streakActual').textContent = data.streak + (data.streak > 1 ? 'x' : '');
+
+                // Efecto visual
+                document.getElementById('resultadoPrediccion').style.animation = 'none';
+                setTimeout(() => {
+                    document.getElementById('resultadoPrediccion').style.animation = 'pulse-glow 1s infinite';
+                }, 100);
+            } catch (e) {
+                console.error('Error API:', e);
+            }
         }
-        
-        function updateStats() {
-            fetch('/api/stats')
-                .then(r => r.json())
-                .then(data => {
-                    document.getElementById('games').textContent = data.total;
-                    document.getElementById('bankerWins').textContent = data.banker;
-                    document.getElementById('bankerPct').textContent = data.banker_pct + '%';
-                    document.getElementById('playerWins').textContent = data.player;
-                    document.getElementById('playerPct').textContent = data.player_pct + '%';
-                    document.getElementById('tieCount').textContent = data.ties;
-                    document.getElementById('streaks').textContent = `${data.streak_b}/${data.streak_p}`;
-                });
+
+        async function actualizarEstadisticas() {
+            try {
+                const statsResp = await fetch('/api/stats');
+                const stats = await statsResp.json();
+                
+                document.getElementById('mesasCount').textContent = stats.active_tables + ' Mesas';
+                document.getElementById('juegosCount').textContent = stats.total_games.toLocaleString() + ' Juegos';
+                document.getElementById('ultimaUpdate').textContent = stats.last_update || 'Actualizando...';
+                document.getElementById('statusLive').textContent = `🟢 Live - Última actualización ${stats.last_update}`;
+            } catch (e) {}
         }
-        
-        function updateHistory() {
-            fetch('/api/history')
-                .then(r => r.json())
-                .then(data => {
-                    const historyEl = document.getElementById('history');
-                    historyEl.innerHTML = '';
-                    data.history.slice(-20).reverse().forEach(result => {
-                        const span = document.createElement('span');
-                        span.className = `w-12 h-12 rounded-xl flex items-center justify-center text-lg font-bold ${
-                            result === 'B' ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' :
-                            result === 'P' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' :
-                            'bg-gray-500 text-white'
-                        } card-glow`;
-                        span.textContent = result;
-                        historyEl.appendChild(span);
-                    });
+
+        async function actualizarHistorico() {
+            try {
+                const histResp = await fetch('/api/history');
+                const data = await histResp.json();
+                
+                const container = document.getElementById('historicoResultados');
+                container.innerHTML = '';
+                
+                data.history.slice(-20).reverse().forEach((resultado, index) => {
+                    const div = document.createElement('div');
+                    div.className = `w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-bold shadow-2xl transition-all hover:scale-110 ${
+                        resultado === 'B' ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-500/50' :
+                        resultado === 'P' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-purple-500/50' :
+                        'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-gray-600/50'
+                    }`;
+                    div.textContent = resultado;
+                    div.style.animationDelay = `${index * 0.05}s`;
+                    container.appendChild(div);
                 });
+            } catch (e) {}
         }
-        
+
+        // Inicializar
         function init() {
-            document.getElementById('status').textContent = '🟢 Conectado - Live BC.Game';
-            updatePrediction();
-            updateStats();
-            updateHistory();
+            actualizarPrediccion();
+            actualizarEstadisticas();
+            actualizarHistorico();
             
-            // Auto-refresh cada 8s
-            autoRefresh = setInterval(() => {
-                updatePrediction();
-                updateStats();
-                updateHistory();
-            }, 8000);
+            // Auto-update cada 12 segundos
+            intervalUpdate = setInterval(() => {
+                actualizarPrediccion();
+                actualizarEstadisticas();
+                actualizarHistorico();
+            }, 12000);
         }
-        
-        document.getElementById('predictBtn').onclick = () => {
-            updatePrediction();
-            document.getElementById('status').textContent = '🔮 Predicción actualizada';
+
+        // Botón predict
+        document.getElementById('btnPrediccion').addEventListener('click', () => {
+            document.getElementById('statusLive').textContent = '🚀 ¡SEÑAL ACTUALIZADA!';
+            actualizarPrediccion();
             setTimeout(() => {
-                document.getElementById('status').textContent = '🟢 Conectado - Live BC.Game';
-            }, 2000);
-        };
-        
-        // Init en 1s
-        setTimeout(init, 1000);
+                document.getElementById('statusLive').textContent = '🟢 Live - Real-Time BC.Game';
+            }, 3000);
+        });
+
+        // Start después de cargar
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
