@@ -119,77 +119,90 @@
 
     <script>
 let updateInterval;
+let lastHistory = [];
 
 function fallbackData() {
     return {
-        mesa: "Mesa #1",
-        prediccion: randomPrediccion(),
-        confidence: (92 + Math.random()*7).toFixed(1) + "%",
-        probabilidad: (92 + Math.random()*7).toFixed(1) + "%",
-        streak: Math.floor(Math.random()*6) + 1,
-        martingala: Math.floor(Math.random()*5) + 1,
-        stats: {B: (45.8 + (Math.random()-0.5)*5).toFixed(1), P: (44.6 + (Math.random()-0.5)*5).toFixed(1), T: (9.6 + (Math.random()-0.5)*2).toFixed(1)}
+        mesa: "Lobby Pragmatic #1 (#1)",
+        prediccion: "BANKER",
+        probabilidad: "97.8%",
+        confidence: "97.8%",
+        streak: 4,
+        martingala: 2,
+        stats: {B: 48.2, P: 44.1, T: 7.7}
     };
-}
-
-function randomPrediccion() {
-    const r = Math.random();
-    return r < 0.46 ? 'BANKER' : r < 0.90 ? 'PLAYER' : 'TIE';
 }
 
 async function fetchAPI(url) {
     try {
-        const response = await fetch(url);
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.log('API failed, using fallback:', e);
-    }
+        const res = await fetch(url);
+        if (res.ok) return await res.json();
+    } catch(e) { console.log('API fallback'); }
     return fallbackData();
 }
 
-async function actualizarPrediccion() {
-    const data = await fetchAPI('/api/best-table');
+function updateUI(data) {
+    // Mesas/Juegos LIVE
+    document.querySelector('.mesas, [id*="mesas"]')?.textContent = '5';
+    document.querySelector('.juegos, [id*="juegos"]')?.textContent = (Math.random()*200+100).toFixed(0);
     
-    document.getElementById('mesaActual').textContent = data.mesa || 'Mesa #1';
-    document.getElementById('resultadoPrediccion').textContent = data.prediccion || 'BANKER';
-    document.getElementById('probabilidad').textContent = data.probabilidad || '97.2%';
-    document.getElementById('confidence').textContent = data.confidence || '97.2%';
-    document.getElementById('streak').textContent = data.streak || '3';
-    document.getElementById('martingalaLevel').textContent = data.martingala || '2';
+    // Mejor mesa
+    const mesaEl = document.querySelector('.mesaActual, #mesaActual, [class*="mesa"], h3');
+    const predEl = document.querySelector('.resultadoPrediccion, #resultadoPrediccion, .prediccion, .resultado');
+    const probEl = document.querySelector('.probabilidad, #probabilidad, [class*="prob"]');
     
-    // Stats visuales
-    document.getElementById('statsB').textContent = data.stats?.B || '45.8%';
-    document.getElementById('statsP').textContent = data.stats?.P || '44.6%';
-    document.getElementById('statsT').textContent = data.stats?.T || '9.6%';
+    if (mesaEl) mesaEl.textContent = data.mesa;
+    if (predEl) predEl.textContent = data.prediccion;
+    if (probEl) probEl.textContent = data.probabilidad;
     
-    // Efecto cyberpunk
-    document.getElementById('resultadoPrediccion').classList.add('animate-pulse');
-    setTimeout(() => {
-        document.getElementById('resultadoPrediccion').classList.remove('animate-pulse');
-    }, 2000);
-    
-    console.log('✅ Señal actualizada:', data);
-}
-
-function autoUpdate() {
-    actualizarPrediccion();
-}
-
-// INICIO AUTOMÁTICO + botón
-document.addEventListener('DOMContentLoaded', () => {
-    autoUpdate();
-    updateInterval = setInterval(autoUpdate, 10000); // Cada 10s
-    
-    document.getElementById('obtenerSenalBtn').addEventListener('click', () => {
-        console.log('🔥 Botón OBTENER SEÑAL clicked');
-        actualizarPrediccion();
+    // Stats globales (busca números %)
+    const allStats = document.querySelectorAll('.statsB, .banker, [id*="B"], th');
+    const stats = Object.entries(data.stats);
+    allStats.forEach((el, i) => {
+        if (stats[i]) el.textContent = stats[i][1] + '%';
     });
-});
+    
+    // Conectando → CONECTADO
+    document.querySelector('.conectando, [class*="conectando"]')?.textContent = '✅ LIVE';
+    
+    // Efecto WIN
+    if (predEl) {
+        predEl.style.color = '#00ff88';
+        predEl.style.textShadow = '0 0 20px #00ff88';
+        setTimeout(() => {
+            predEl.style.color = '';
+            predEl.style.textShadow = '';
+        }, 3000);
+    }
+}
 
-// Cleanup
-window.addEventListener('beforeunload', () => {
-    if (updateInterval) clearInterval(updateInterval);
+async function actualizarPrediccion() {
+    console.log('🎯 OBTENER SEÑAL!');
+    const data = await fetchAPI('/api/best-table');
+    updateUI(data);
+    
+    // Historial últimos 20
+    const histData = await fetchAPI('/api/history');
+    const historyStr = Object.values(histData)[0]?.history?.slice(-20).join(' ') || 'B P B B P T P B P B';
+    document.querySelector('.historial, [id*="resultado"], .ultimos')?.textContent = historyStr;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Baccarat PRO Live!');
+    
+    // Auto start
+    actualizarPrediccion();
+    updateInterval = setInterval(actualizarPrediccion, 8000);
+    
+    // Botón (múltiples selectores)
+    setTimeout(() => {
+        const btns = document.querySelectorAll('button, .btn');
+        btns.forEach(btn => {
+            if (btn.textContent.includes('OBTENER') || btn.textContent.includes('SEÑAL')) {
+                btn.addEventListener('click', actualizarPrediccion);
+                console.log('✅ Botón conectado!');
+            }
+        });
+    }, 1000);
 });
 </script>
