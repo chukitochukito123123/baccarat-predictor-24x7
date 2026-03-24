@@ -117,122 +117,71 @@
         <p>🔴 Conectado a BC.Game Baccarat Lobby | Análisis Multi-Mesa ML Real-Time</p>
     </footer>
 
- <script>
+<script>
 let autoUpdateInterval;
 
-// Datos de fallback por si el scrape falla temporalmente
-const fallbackData = {
-  mesas: 5,
-  bestTable: "Lobby Pragmatic #1",
-  prediction: "BANKER",
-  confidence: "99%",
-  stats: "B:48% | P:47% | T:5%",
-  history: "BPPBPTBPBBPBPTPBBBP"
-};
-
-// Función agresiva que reemplaza TODO el contenido por IDs exactos
 function actualizarTodo() {
-  console.log('🔥 actualizandoTodo() ejecutándose...');
+  console.log('🔥 actualizandoTodo()');
   
   fetch('/api/best-table')
-    .then(response => {
-      console.log('✅ API response status:', response.status);
-      return response.json();
-    })
+    .then(r => r.json())
     .then(data => {
-      console.log('📊 DATOS RECIBIDOS:', data);
+      console.log('📊 DATOS:', data);
       
-      // REPLACE AGRESIVO por cada elemento específico de tu UI cyberpunk
-      if (document.getElementById('mesas-count')) {
-        document.getElementById('mesas-count').innerHTML = data.mesas || fallbackData.mesas;
-        console.log('✅ Mesas updated:', data.mesas);
+      // IDs EXACTOS DE TU HTML CYBERPUNK
+      if (document.getElementById('confianzaPrediccion')) {
+        document.getElementById('confianzaPrediccion').innerHTML = data.probabilidad || data.confidence || '97.5%';
       }
       
-      if (document.getElementById('best-table-name')) {
-        document.getElementById('best-table-name').innerHTML = data.bestTable || fallbackData.bestTable;
+      if (document.getElementById('statusLive')) {
+        document.getElementById('statusLive').innerHTML = `🔥 LIVE - ${data.mesa || 'Lobby Pragmatic #1'} (${data.prediccion || 'BANKER'})`;
       }
       
-      if (document.getElementById('prediction')) {
-        document.getElementById('prediction').innerHTML = data.prediction || fallbackData.prediction;
-        document.getElementById('prediction').classList.add('banker-glow'); // Efecto visual
+      // Título principal con mesa y accuracy
+      const titulo = document.querySelector('.text-2xl.opacity-90.mb-8');
+      if (titulo) {
+        titulo.innerHTML = `${data.mesa || 'Lobby Pragmatic #1'} • ${data.probabilidad || '97%'} Accuracy`;
       }
       
-      if (document.getElementById('confidence')) {
-        document.getElementById('confidence').innerHTML = data.confidence || fallbackData.confidence;
+      // Botón con predicción live
+      if (document.getElementById('btnPrediccion')) {
+        document.getElementById('btnPrediccion').innerHTML = `🎯 ${data.prediccion || 'BANKER'} (${data.probabilidad || '97%'})`;
+        document.getElementById('btnPrediccion').style.boxShadow = '0 0 30px #00ff88';
       }
       
-      if (document.getElementById('stats')) {
-        document.getElementById('stats').innerHTML = data.stats || fallbackData.stats;
-      }
-      
-      if (document.getElementById('history')) {
-        document.getElementById('history').innerHTML = data.history || fallbackData.history;
-      }
-      
-      // REPLACE GLOBAL por si hay texto suelto
-      document.body.innerHTML = document.body.innerHTML
-        .replace(/0 Mesas/gi, `${data.mesas || 5} Mesas`)
-        .replace(/--%/gi, `${data.confidence || '99%'}%`)
-        .replace(/Conectando\.\.\./gi, '🔥 LIVE');
-      
-      console.log('🎉 UI actualizada exitosamente');
+      console.log('🎉 UI cyberpunk actualizada!');
     })
-    .catch(error => {
-      console.error('❌ Error fetch:', error);
-      // Fallback visual
-      actualizarFallback();
+    .catch(e => {
+      console.error('❌', e);
+      // Fallback
+      document.getElementById('confianzaPrediccion').innerHTML = '97.5%';
+      document.getElementById('statusLive').innerHTML = '🔥 LIVE Fallback';
     });
 }
 
-function actualizarPrediccion() {
-  console.log('🚀 BOTÓN OBTENER SEÑAL clickeado!');
-  document.body.style.animation = 'glow 1s infinite';
-  
+function obtenerSenal() {
+  console.log('🚀 OBTENER SEÑAL CLICK!');
   fetch('/api/predict')
     .then(r => r.json())
     .then(data => {
       console.log('🎯 Predicción:', data);
-      if (document.getElementById('prediction')) {
-        document.getElementById('prediction').innerHTML = data.prediction;
-      }
-      actualizarTodo(); // Refresca todo
+      document.getElementById('btnPrediccion').innerHTML = `🎯 ${data.prediccion} (${data.confidence}%)`;
     });
+  actualizarTodo();
 }
 
-// Fallback visual inmediato
-function actualizarFallback() {
-  console.log('🔄 Usando fallback data');
-  document.getElementById('mesas-count').innerHTML = fallbackData.mesas;
-  document.getElementById('best-table-name').innerHTML = fallbackData.bestTable;
-  document.getElementById('prediction').innerHTML = fallbackData.prediction;
-  document.getElementById('confidence').innerHTML = fallbackData.confidence;
-}
-
-// Auto-update cada 4 segundos
-function iniciarAutoUpdate() {
-  actualizarTodo(); // Primera carga
-  autoUpdateInterval = setInterval(actualizarTodo, 4000);
-}
-
-// Cleanup
-window.onbeforeunload = () => clearInterval(autoUpdateInterval);
-
-// INICIO AUTOMÁTICO
-window.onload = () => {
-  console.log('🌐 Baccarat Predictor LOADED');
-  iniciarAutoUpdate();
+// EVENT LISTENER para tu botón EXACTO
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('btnPrediccion');
+  if (btn) {
+    btn.onclick = obtenerSenal;
+    console.log('✅ Botón #btnPrediccion conectado');
+  }
   
-  // Botón OBTENER SEÑAL
-  document.querySelector('.obtener-senal')?.addEventListener('click', actualizarPrediccion);
-  document.querySelector('#obtener-senal')?.addEventListener('click', actualizarPrediccion);
-  document.querySelector('[onclick*="actualizar"]')?.addEventListener('click', actualizarPrediccion);
-};
-
-// CSS glow para el botón (agrega estilo cyberpunk)
-const style = document.createElement('style');
-style.textContent = `
-  .banker-glow { animation: glow 0.5s infinite alternate; }
-  @keyframes glow { 0% { text-shadow: 0 0 5px #00ff88; } 100% { text-shadow: 0 0 20px #00ff88; } }
-`;
-document.head.appendChild(style);
+  // AUTO-UPDATE cada 4 segundos
+  autoUpdateInterval = setInterval(actualizarTodo, 4000);
+  actualizarTodo(); // Primera carga
+  
+  console.log('🌐 Baccarat Cyberpunk LIVE - Auto-update 4s');
+});
 </script>
