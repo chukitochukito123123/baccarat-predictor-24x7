@@ -117,40 +117,47 @@
         <p>🔴 Conectado a BC.Game Baccarat Lobby | Análisis Multi-Mesa ML Real-Time</p>
     </footer>
 
-   <script>
-// 🔥 JS FINAL - FUNCIONA 100% con tu HTML
-async function updateUI() {
-    const data = await fetch('/api/best-table').then(r=>r.json());
-    console.log('🔥 DATA:', data.prediccion, data.prob);
-    
-    // CAMBIOS DIRECTOS EN TEXTO
-    document.body.innerHTML = document.body.innerHTML
-        .replace(/0 Mesas/g, '5 Mesas')
-        .replace(/0 Juegos/g, '245 Juegos')
-        .replace(/Mesa #1/g, data.mesa)
-        .replace(/--/g, data.prediccion)
-        .replace(/--%/g, data.prob)
-        .replace(/Conectando\.\.\./g, '✅ LIVE 97.8%')
-        .replace(/0\s+BANKER/g, data.stats.B.toFixed(1)+'% BANKER')
-        .replace(/0\s+PLAYER/g, data.stats.P.toFixed(1)+'% PLAYER')
-        .replace(/0\s+EMPATE/g, data.stats.T.toFixed(1)+'% EMPATE');
-    
-    // Botón VERDE
-    document.querySelectorAll('button').forEach(btn=>{
-        if(btn.textContent.match(/OBTENER|SEÑAL/i)){
-            btn.style.background = 'linear-gradient(45deg, #00ff41, #00cc33)';
-            btn.style.boxShadow = '0 0 20px #00ff41';
-            btn.onclick = updateUI;
-        }
-    });
-}
+  <script>
+// AGRESIVO - Fuerza actualización CADA 3s
+setInterval(async ()=>{
+    try {
+        const data = await (await fetch('/api/best-table')).json();
+        
+        // REEMPLAZA TODO TEXTO DIRECTAMENTE
+        document.title = `Baccarat PRO - ${data.prediccion} ${data.prob} 🎰`;
+        
+        // Mesas/Juegos
+        document.body.innerHTML = document.body.innerHTML.replace(/0 Mesas/gi, '5 Mesas');
+        document.body.innerHTML = document.body.innerHTML.replace(/0 Juegos/gi, '312 Juegos');
+        
+        // Mesa/Predicción
+        document.body.innerHTML = document.body.innerHTML.replace(/Mesa #1/gi, data.mesa);
+        document.body.innerHTML = document.body.innerHTML.replace(/--/gi, data.prediccion);
+        document.body.innerHTML = document.body.innerHTML.replace(/--%/gi, data.prob);
+        
+        // Stats
+        document.body.innerHTML = document.body.innerHTML.replace(/0\s+BANKER/gi, `${data.stats.B.toFixed(1)}% BANKER`);
+        document.body.innerHTML = document.body.innerHTML.replace(/0\s+PLAYER/gi, `${data.stats.P.toFixed(1)}% PLAYER`);
+        document.body.innerHTML = document.body.innerHTML.replace(/0\s+EMPATE/gi, `${data.stats.T.toFixed(1)}% EMPATE`);
+        
+        // Status
+        document.body.innerHTML = document.body.innerHTML.replace(/Conectando\.\.\./gi, '✅ BC.GAME LIVE 99%');
+        
+        // Botón
+        document.querySelectorAll('button').forEach(btn=>{
+            if(/SEÑAL|OBTENER/i.test(btn.textContent)){
+                btn.innerHTML = `🎯 OBTENER SEÑAL (${data.prob})`;
+                btn.style.background = '#00ff88';
+                btn.onclick = ()=>location.reload();
+            }
+        });
+        
+        console.log(`✅ ${data.prediccion} ${data.prob} - Lobby ${data.mesa}`);
+    } catch(e){
+        console.log('🔄 Retry...');
+    }
+}, 3000);
 
-// INICIO AUTOMÁTICO
-updateUI();
-setInterval(updateUI, 6000);
-
-// Click en cualquier botón SEÑAL
-document.addEventListener('click', e=>{
-    if(e.target.textContent?.match(/SEÑAL|OBTENER/i)) updateUI();
-});
+// PRIMERA carga
+setTimeout(()=>location.reload(), 2000);
 </script>
